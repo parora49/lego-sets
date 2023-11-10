@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <title>Lego Collection</title>
+  </head>
+  <body>
+    <!-- navigation -->
+    <%- include('partials/navbar', {page: ''}) %>
+    <!-- navigation ends -->
+
+    <div class="container mx-auto">
+      <!-- hero section -->
+      <div class="hero min-h-screen bg-base-200">
+        <div class="hero-content text-center">
+          <div class="max-w-md">
+            <h1 class="text-5xl font-bold">Welcome to Lego Colletion</h1>
+            <p class="py-6">
+              Welcome to our Lego Collection. Explore the fascinating world of
+              Lego sets, where creativity knows no bounds.
+            </p>
+            <a class="btn btn-primary" href="/lego/sets"
+              >Explore Our Collection</a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- hero section ends -->
+
+      <!-- grid system cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- card with set 001-1 -->
+        <div class="card w-96 bg-base-100 shadow-xl">
+          <figure>
+            <img
+              class="w-full"
+              src="https://cdn.rebrickable.com/media/sets/001-1.jpg"
+              alt="Gear"
+            />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Gear</h2>
+            <p>
+              This set was released in America (USA/CAN) by Samsonite in 1965.
+              It was re-released in 1969 as an educational set (322-4). It was
+              never released in Europe. It has
+              <strong>43 parts</strong> and belongs to the
+              <a
+                href="/lego/sets?theme=Technic"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Technic theme</a
+              >
+            </p>
+            <div class="card-actions justify-end">
+              <a class="btn btn-primary" href="/lego/sets/001-1">Explore</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- card with set 003-1 -->
+        <div class="card w-96 bg-base-100 shadow-xl">
+          <figure>
+            <img
+              class="w-full"
+              src="https://cdn.rebrickable.com/media/sets/003-1.jpg"
+              alt="Master Mechanic Set"
+            />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Master Mechanic Set</h2>
+            <p>
+              This set was released in America (USA/CAN) by Samsonite in 1966.
+              It was never released in Europe. It has
+              <strong>403 parts</strong> and belongs to the
+              <a
+                href="/lego/sets?theme=Basic%20Set"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Basic Set theme</a
+              >
+            </p>
+            <div class="card-actions justify-end">
+              <a class="btn btn-primary" href="/lego/sets/003-1">Explore</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- card with set 0241187567-1 -->
+        <div class="card w-96 bg-base-100 shadow-xl">
+          <figure>
+            <img
+              class="w-full"
+              src="https://cdn.rebrickable.com/media/sets/0241187567-1.jpg"
+              alt="Master Mechanic Set"
+            />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Ninjago: Build Your Own Adventure</h2>
+            <p>
+              Written by Scarlett O'Hara and Published by Dorling Kindersley in
+              August 2015. It has
+              <strong>74 parts</strong> and belongs to the
+              <a
+                href="/lego/sets?theme=Books"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Books Theme</a
+              >
+            </p>
+            <div class="card-actions justify-end">
+              <a class="btn btn-primary" href="/lego/sets/0241187567-1"
+                >Explore</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- grid system cards end -->
+    </div>
+  </body>
+</html>

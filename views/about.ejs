@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <title>Lego Collection</title>
+  </head>
+  <body>
+    <!-- navigation -->
+    <%- include('partials/navbar', {page: '/about'}) %>
+    <!-- navigation ends -->
+
+    <div class="container mx-auto">
+      <!-- hero section -->
+      <div class="hero bg-base-200">
+        <div class="hero-content text-center">
+          <div class="max-w-md">
+            <h1 class="text-5xl font-bold">About</h1>
+            <p class="py-6">All About me</p>
+          </div>
+        </div>
+      </div>
+      <!-- hero section ends -->
+
+      <!-- grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 mt-6">
+        <!-- Left Column (Image) -->
+        <div
+          class="p-6 rounded-lg shadow-md d-flex justify-center align-center"
+        >
+          <img
+            src="/images/me.jpg"
+            alt="Me"
+            class="w-full h-[350px] max-w-sm object-scale-down"
+          />
+        </div>
+
+        <!-- Right Column (Blurb) -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h2 class="text-xl font-semibold text-gray-900">About Me</h2>
+          <p class="text-md text-gray-600 mt-2">
+            I'm an extroverted individual with a passion for various activities.
+            I absolutely love hitting the gym and staying active. Painting has
+            been a creative outlet for me, allowing me to express myself through
+            art.
+          </p>
+          <p class="text-gray-600 text-md mt-2">
+            I'm a former dancer with 14 years of experience in dance, which has
+            greatly enriched my life. Learning new things is a constant pursuit,
+            and my love for dogs led me to work with a dog rescuing NGO in
+            India. I enjoy engaging with people and exploring new experiences in
+            life.
+          </p>
+        </div>
+      </div>
+      <!-- grid end -->
+    </div>
+  </body>
+</html>
