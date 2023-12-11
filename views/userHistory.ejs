@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <title>Lego Collection</title>
+  </head>
+  <body>
+    <!-- navigation -->
+    <%- include('partials/navbar', {page: '/userHistory'}) %>
+    <!-- navigation ends -->
+
+    <div class="container mx-auto">
+      <!-- hero section -->
+      <div class="hero bg-base-200">
+        <div class="hero-content text-center">
+          <div class="max-w-md">
+            <h1 class="text-5xl font-bold">User History</h1>
+            <p class="py-6"> <%= session.user.userName %> - <%= session.user.email %></p>
+          </div>
+        </div>
+      </div>
+      <!-- hero section ends -->
+       <div class="overflow-x-auto">
+        <table class="table">
+          <!-- head -->
+          <thead>
+            <tr>
+              <th>Login Date/Time</th>
+              <th>Client Information</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% session.user.loginHistory.forEach(hst=>{ %>
+            <tr>
+              <td><%= new Date( hst.dateTime); %></td>
+              <td><%= hst.userAgent %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

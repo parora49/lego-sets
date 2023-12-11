@@ -1,24 +1,51 @@
 /********************************************************************************
- * WEB322 – Assignment 04
+ *  WEB322 – Assignment 06
  *
- * I declare that this assignment is my own work in accordance with Seneca's
- * Academic Integrity Policy:
+ *  I declare that this assignment is my own work in accordance with Seneca's
+ *  Academic Integrity Policy:
  *
- * https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
+ *  https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
  *
- * Name: Palak Arora_ Student ID: ____159493212___ Date: _09-11-2023__
+ *  Name: Palak Arora_ Student ID: ____159493212___ Date: _05-12-2023__
  *
- * Published URL: https://frantic-tweed-jacket-bass.cyclic.app
+ *  Published URL: https://frantic-tweed-jacket-bass.cyclic.app
  *
  ********************************************************************************/
+
+const authData = require("./modules/auth-service");
 const express = require("express");
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 const legoData = require("./modules/legoSets");
+const clientSessions = require("client-sessions");
 
 // static files folder
-app.use(express.static("public"));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));app.use(express.urlencoded({ extended: true }));
+
+
+// sesssion
+app.use(
+  clientSessions({
+    cookieName: "session", // this is the object name that will be added to 'req'
+    secret: "j6PjQ4DfqzEVNf6GgAHE6hd69Nh6hG7SJ8QZz", // this should be a long un-guessable string.
+    duration: 2 * 60 * 1000, // duration of the session in milliseconds (2 minutes)
+    activeDuration: 1000 * 60, // the session will be extended by this many ms each request (1 minute)
+  })
+);
+
+app.use((req, res, next) => {
+  res.locals.session = req.session;
+  next();
+});
+
+//helper middleware function that checks if a user is logged in 
+function ensureLogin(req, res, next) {
+  if (!req.session.user){
+    res.redirect('/login');
+  } else {
+    next();
+  }
+}
 
 // ejs
 app.set("view engine", "ejs");
@@ -59,8 +86,8 @@ app.get("/lego/sets/:setNum", (req, res) => {
       res.status(404).render("404", { message: err });
     });
 });
-
-app.get("/lego/addSet", (req, res) => {
+ 
+app.get("/lego/addSet",  ensureLogin,(req, res) => {
   legoData
     .getAllThemes()
     .then((themeData) => res.render("addSet", { themes: themeData }))
@@ -69,7 +96,7 @@ app.get("/lego/addSet", (req, res) => {
     });
 });
 
-app.post("/lego/addSet", (req, res) => {
+app.post("/lego/addSet", ensureLogin, (req, res) => {
   legoData
     .addSet(req.body)
     .then(() => res.redirect("/lego/sets"))
@@ -80,7 +107,7 @@ app.post("/lego/addSet", (req, res) => {
     });
 });
 
-app.get("/lego/editSet/:setNum", (req, res) => {
+app.get("/lego/editSet/:setNum", ensureLogin, (req, res) => {
   legoData
     .getSetByNum(req.params.setNum)
     .then((setData) => {
@@ -98,7 +125,7 @@ app.get("/lego/editSet/:setNum", (req, res) => {
     });
 });
 
-app.post("/lego/editSet/:num", (req, res) => {
+app.post("/lego/editSet/:num", ensureLogin, (req, res) => {
   legoData
     .editSet(req.params.num, req.body)
     .then(() => res.redirect("/lego/sets"))
@@ -109,7 +136,7 @@ app.post("/lego/editSet/:num", (req, res) => {
     });
 });
 
-app.get("/lego/deleteSet/:num", (req, res) => {
+app.get("/lego/deleteSet/:num", ensureLogin, (req, res) => {
   legoData
     .deleteSet(req.params.num)
     .then(() => res.redirect("/lego/sets"))
@@ -120,6 +147,60 @@ app.get("/lego/deleteSet/:num", (req, res) => {
     });
 });
 
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
+app.post("/register", (req, res) => {
+  authData
+    .registerUser(req.body)
+    .then(() => {
+      res.render("register", { successMessage: "User created" });
+    })
+    .catch((err) => {
+      res.render("register", {
+        errorMessage: err,
+        userName: req.body.userName,
+      });
+    });
+});
+
+app.post("/login", (req, res) => {
+  req.body.userAgent = req.get("User-Agent");
+
+  authData
+    .checkUser(req.body)
+    .then((user) => {
+      req.session.user = {
+        userName: user.userName,
+        email: user.email,
+        loginHistory: user.loginHistory,
+      };
+      res.redirect("/lego/sets");
+    })
+    .catch((err) => {
+      res.render("login", {
+        errorMessage: err,
+        userName: req.body.userName,
+      });
+    });
+});
+
+// login history
+app.get("/userHistory", ensureLogin, (req, res) => {
+  res.render("userHistory");
+});
+
+// logout route
+app.get("/logout", function (req, res) {
+  delete app.locals["session"];
+  req.session.reset();
+  res.redirect("/");
+});
 // 404 error
 app.use((req, res) => {
   res.status(404).render("404", {
@@ -129,6 +210,7 @@ app.use((req, res) => {
 
 legoData
   .initialize()
+  .then(authData.initialize)
   .then(() => {
     app.listen(HTTP_PORT, () =>
       console.log(`server listening on: ${HTTP_PORT}`)

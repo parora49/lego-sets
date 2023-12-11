@@ -77,10 +77,9 @@
                 <a class="btn btn-link" href="/lego/sets/<%= set.set_num %>">
                   details</a
                 >
-                <a class="btn btn-link" href="/lego/editSet/<%= set.set_num %>">
-                  Edit</a
-                >
-
+                <% if(session.user){ %>
+                <a class="btn btn-link" href="/lego/editSet/<%= set.set_num %>">Edit</a>
+                <% } %>
                 <a class="btn btn-link" href="/lego/deleteSet/<%= set.set_num %>">
                   Delete</a
                 >
